@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react";
-import CurrentStatusCard from "@/components/CurrentStatusCard";
-import HistoricalChart from "@/components/HistoricalChart";
-import AlertsHistory from "@/components/AlertsHistory";
-import CriticalThresholds from "@/components/CriticalThresholds";
-import SystemStatus from "@/components/SystemStatus";
-import Header from "@/components/Header";
+import NavBar from "@/components/Navbar";
+import SideBar from "@/components/SideBar";
+import { ThemeContext } from "@/context/ThemeContext";
+import React, { useContext, useEffect, useState } from "react";
+import { Outlet } from "react-router";
 
-// Main Dashboard Component
-const Home = () => {
+export default function MainPage() {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { theme } = useContext(ThemeContext);
+
   const [currentData, setCurrentData] = useState({
     temperature: 24.6,
     humidity: 60.72,
@@ -135,41 +135,36 @@ const Home = () => {
   };
 
   return (
-    <div className="min-h-screen p-4">
-      <div className=" max-w-7xl mx-auto space-y-6">
-        {/* Header */}
-        <Header />
+    <div className={`${theme} font-[Poppins]`}>
+      {/* Navbar */}
+      <NavBar
+        isMobileMenuOpen={isMobileMenuOpen}
+        setIsMobileMenuOpen={setIsMobileMenuOpen}
+      />
 
-        {/* Current Status Card */}
-        <CurrentStatusCard
-          data={currentData}
-          formatTime={formatTime}
-          formatDate={formatDate}
-        />
+      {/* Main Layout */}
+      <div className="flex flex-row">
+        {/* Sidebar */}
+        <SideBar isMobileMenuOpen={isMobileMenuOpen} />
 
-        {/* Main Grid */}
-        <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-          {/* Left Column - Charts and Alerts */}
-          <div className="xl:col-span-2 space-y-6">
-            {/* Historical Chart */}
-            <HistoricalChart data={historicalData} />
-
-            {/* Alerts History */}
-            <AlertsHistory alerts={alertsHistory} />
+        {/* Main Content */}
+        <main className="flex-1 py-6 px-5 lg:py-8 lg:px-24">
+          <div className="relative mx-auto md:ml-56">
+            <Outlet
+              context={{
+                currentData,
+                setCurrentData,
+                historicalData,
+                setHistoricalData,
+                alertsHistory,
+                setAlertsHistory,
+                formatTime,
+                formatDate,
+              }}
+             />
           </div>
-
-          {/* Right Column - Thresholds and Controls */}
-          <div className="space-y-6">
-            {/* Critical Thresholds */}
-            <CriticalThresholds />
-
-            {/* System Status */}
-            <SystemStatus data={currentData} />
-          </div>
-        </div>
+        </main>
       </div>
     </div>
   );
-};
-
-export default Home;
+}
