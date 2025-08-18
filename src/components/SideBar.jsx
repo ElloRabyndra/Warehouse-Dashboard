@@ -22,7 +22,7 @@ export default function ({
           <h3 className="text-xs uppercase font-semibold mb-4 text-primary/80">
             Section
           </h3>
-          <div className="space-y-2">
+          <div className="space-y-2 py-3">
             <Link
               to="/"
               className={`${isActive("/") ? "bg-primary/10" : "hover:bg-primary/10"} w-full flex items-center gap-3 p-3 rounded-lg cursor-pointer`}
