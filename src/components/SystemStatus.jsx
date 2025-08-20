@@ -3,7 +3,28 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
 // SystemStatus Component
-const SystemStatus = ({ data }) => {
+const SystemStatus = ({ connectionStatus, isUsingRealData, data }) => {
+  const getWiFiStatus = () => {
+    switch (connectionStatus) {
+      case "connected":
+        return { text: "Terhubung", variant: "success" };
+      case "connecting":
+        return { text: "Menghubungkan...", variant: "secondary" };
+      case "disconnected":
+      default:
+        return { text: "Terputus", variant: "destructive" };
+    }
+  };
+
+  const getSensorStatus = () => {
+    return isUsingRealData
+      ? { text: "Aktif", variant: "success" }
+      : { text: "Simulasi", variant: "secondary" };
+  };
+
+  const wifiStatus = getWiFiStatus();
+  const sensorStatus = getSensorStatus();
+
   return (
     <Card>
       <CardHeader>
@@ -13,12 +34,12 @@ const SystemStatus = ({ data }) => {
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <span className="text-sm font-medium">Koneksi WiFi</span>
-            <Badge variant="success">Terhubung</Badge>
+            <Badge variant={wifiStatus.variant}>{wifiStatus.text}</Badge>
           </div>
 
           <div className="flex items-center justify-between">
             <span className="text-sm font-medium">Sensor DHT22</span>
-            <Badge variant="success">Aktif</Badge>
+            <Badge variant={sensorStatus.variant}>{sensorStatus.text}</Badge>
           </div>
 
           <div className="flex items-center justify-between">

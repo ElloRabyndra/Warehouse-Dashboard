@@ -5,7 +5,7 @@ import Header from "../components/Header";
 import SystemStatus from "../components/SystemStatus";
 
 const Statistic = () => {
-  const { currentData } = useOutletContext();
+  const { currentData, isUsingRealData } = useOutletContext();
   return (
     <div className="p-4">
       <div className=" max-w-7xl mx-auto space-y-6">
@@ -19,7 +19,11 @@ const Statistic = () => {
           </div>
           <div className="space-y-6">
             {/* System Status */}
-            <SystemStatus data={currentData} />
+            <SystemStatus
+              data={currentData}
+              connectionStatus={currentData.connectionStatus}
+              isUsingRealData={isUsingRealData}
+            />
           </div>
         </div>
       </div>
